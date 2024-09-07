@@ -1,6 +1,7 @@
+#test_get_city_weather.py
 import unittest
 from unittest.mock import patch, MagicMock
-from weather_server import WeatherHandler
+from weather_info.main.weather_server import WeatherHandler
 import http.client
 import json
 

@@ -11,11 +11,11 @@ from datetime import timezone
 
 from database import WeatherDatabase
 
-PORT = 8080  # Ensure this matches the client
+PORT = 8080
 
 class WeatherHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        self.database = WeatherDatabase()  # Initialize the database
+        self.database = WeatherDatabase()
         super().__init__(*args, **kwargs)
 
     def do_GET(self):
@@ -24,13 +24,13 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
             city_name = parsed_path.path.split('/')[-1]
             self.handle_weather_request(city_name)
         elif parsed_path.path == '/stats':
-            self.handle_stats_request()  # Call the stats request handler
-        elif parsed_path.path == '/stats_page':  # If you want a separate endpoint for the HTML page
+            self.handle_stats_request()
+        elif parsed_path.path == '/stats_page':
             self.handle_stats_page()
         elif self.path == '/weather_data':
             self.handle_weather_data_request()
         elif parsed_path.path == '/weather_client':
-            self.handle_weather_client_page()  # New handler for the HTML page
+            self.handle_weather_client_page()
         else:
             self.send_response(404)
             self.end_headers()
@@ -38,12 +38,11 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
 
 
     def handle_stats_page(self):
-        # Serve the stats.html file
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        html_file_path = os.path.join('html', 'stats.html')
+        html_file_path = os.path.join('..' ,'html', 'stats.html')
         
         try:
             with open(html_file_path, 'r') as file:
@@ -52,12 +51,11 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404, "File not found")
 
     def handle_weather_client_page(self):
-        # Serve the weather_client.html file
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        html_file_path = os.path.join('html', 'client.html')
+        html_file_path = os.path.join('..' ,'html', 'client.html')
         
         try:
             with open(html_file_path, 'r') as file:
@@ -68,7 +66,7 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
     def handle_weather_request(self, city_name):
         city_name = unquote(city_name)
         conn = http.client.HTTPSConnection("api.openweathermap.org")
-        api_key = "77632be90a0d4e96abab859050b10d98"  # Replace with your actual API key
+        api_key = "77632be90a0d4e96abab859050b10d98" ## **YOUR_API_KEY Should be replaced with your Open Weather Map API**
         params = urlencode({'q': city_name, 'appid': api_key, 'units': 'metric'})
         
         conn.request("GET", f"/data/2.5/weather?{params}")
@@ -87,7 +85,6 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
                 "timestamp": formatted_timestamp
             }
             
-            # Save to database
             self.database.save_weather_data(
                 response_dict["city"],
                 response_dict["temperature"],
@@ -135,7 +132,6 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(json.dumps(stats_response).encode())
 
-# Start the server
 with socketserver.TCPServer(("", PORT), WeatherHandler) as httpd:
     print(f"Serving at port {PORT}")
     httpd.serve_forever()
