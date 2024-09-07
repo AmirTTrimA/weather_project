@@ -66,7 +66,7 @@ class WeatherHandler(http.server.SimpleHTTPRequestHandler):
     def handle_weather_request(self, city_name):
         city_name = unquote(city_name)
         conn = http.client.HTTPSConnection("api.openweathermap.org")
-        api_key = "77632be90a0d4e96abab859050b10d98" ## **YOUR_API_KEY Should be replaced with your Open Weather Map API**
+        api_key = "YOUR_API_KEY" ## **YOUR_API_KEY Should be replaced with your Open Weather Map API**
         params = urlencode({'q': city_name, 'appid': api_key, 'units': 'metric'})
         
         conn.request("GET", f"/data/2.5/weather?{params}")
