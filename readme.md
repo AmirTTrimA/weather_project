@@ -1,6 +1,3 @@
-Sure! Here’s the complete `README.md` without any breaks:
-
-
 # Weather Info HTTP Server
 
 ## Description
@@ -27,8 +24,8 @@ To run this project, you need Python installed on your machine. You also need to
 1. **Clone the repository** (or download the ZIP file):
 
    ```bash
-   git clone <your-repo-url>
-   cd <your-project-directory>
+   git clone <[repo-url](https://github.com/AmirTTrimA/weather_info.git)>
+   cd <weather_project>
    ```
 
 2. **Create a virtual environment**:
